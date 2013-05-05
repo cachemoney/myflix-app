@@ -1,2 +1,8 @@
 %h1 Videos#index
 %p Find me in app/views/videos/index.html.haml
+%table
+  %tbody
+    - @videos.each_slice(3).to_a.each do |row|
+      %tr
+        - row.each do |video|
+          %td= link_to image_tag( video.small_cover_url, alt: "#{video.title}" ), video
