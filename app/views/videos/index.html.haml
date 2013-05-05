@@ -1,6 +1,10 @@
-%table
-  %tbody
-    - @videos.each_slice(3).to_a.each do |row|
-      %tr
-        - row.each do |video|
-          %td= link_to image_tag( video.small_cover_url, alt: "#{video.title}" ), video
+
+%article
+- @categories.each do |category|
+  .well
+    %header
+      %strong= link_to category.title
+      %br/
+      %br/
+    - category.videos.each do |video|
+      = link_to image_tag(video.small_cover_url, alt: "#{video.title}" ), video        
