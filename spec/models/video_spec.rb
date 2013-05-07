@@ -10,5 +10,13 @@ describe Video do
 	end
 
 	it { should belong_to (:category) }
-	
+
+	it "should have title present" do
+		expect(Video.new(title: nil)).to have(1).errors_on(:title)
+	end
+
+	it "should have description present" do
+		expect(Video.new(description: nil)).to have(1).errors_on(:description)
+	end
+
 end
