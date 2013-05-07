@@ -8,4 +8,7 @@ describe Video do
 		video.save
 		Video.first.title.should eq ("test movie title")
 	end
+
+	it { should belong_to (:category) }
+	
 end
