@@ -19,4 +19,8 @@ describe Video do
 		expect(Video.new(description: nil)).to have(1).errors_on(:description)
 	end
 
+	it "return array of movies that match"
+	it "returns an empty array if there is no match"
+	it "returns an array of 1 element for one match"
+
 end
