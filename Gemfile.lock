@@ -29,8 +29,11 @@ GEM
       i18n (~> 0.6)
       multi_json (~> 1.0)
     arel (3.0.2)
+    bcrypt-ruby (3.0.1)
+    bcrypt-ruby (3.0.1-x86-mingw32)
     bootstrap-sass (2.2.2.0)
       sass (~> 3.2)
+    bootstrap_form (0.3.2)
     builder (3.0.4)
     callsite (0.0.11)
     coderay (1.0.8)
@@ -145,6 +148,7 @@ GEM
     uglifier (1.3.0)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
+    win32console (1.3.2)
     win32console (1.3.2-x86-mingw32)
 
 PLATFORMS
@@ -152,7 +156,9 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
+  bcrypt-ruby
   bootstrap-sass
+  bootstrap_form
   coffee-rails (~> 3.2.1)
   haml-rails
   jquery-rails
