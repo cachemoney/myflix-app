@@ -1,4 +1,4 @@
 Fabricator(:video) do
   title { "Game of Thrones"}
-  description { "Drama"}
+  description { Faker::Lorem.paragraph(2)}
 end
