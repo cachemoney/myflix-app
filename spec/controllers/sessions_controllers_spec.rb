@@ -16,7 +16,7 @@ describe SessionsController do
     context "with existing user" do
       it "create login session" do
         post :create, email: user1.email, password: "qwerty"
-        expect(session[:user_id]).to_not eq nil
+        expect(session[:user_id]).to eq user1.id
       end
       it "redirects to the home page" do
         post :create, email: user1.email,password: "qwerty"
@@ -45,13 +45,14 @@ describe SessionsController do
     end
   end
 
-  describe 'Post #destroy' do
+  describe 'GET destroy' do
     # let(:user1){ Fabricate(:user) }
     # post :create, email: user1.email, password: "qwerty"
     
     context "session destroyed" do
       it "user_id is nil when user visits log_out_path" do
-        delete :destroy
+        session[:user_id] = Fabricate(:user).id
+        get :destroy
         expect(session[:user_id]).to eq nil
       end
       it "redirects to root path" do
