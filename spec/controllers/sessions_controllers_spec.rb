@@ -6,7 +6,7 @@ describe SessionsController do
 
     it "should render the login tempate" do
       get :new
-      response.should render_template :new
+      expect(response).to render_template :new
     end
   end
 

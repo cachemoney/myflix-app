@@ -7,30 +7,45 @@ describe UsersController do
 
 		it "assign new user to @user " do
 			get :new
-			expect(assigns(:user)).to be_a_new(User)
+			expect(assigns(:user)).to be_instance_of(User)
 		end
+
 		it "should render new template" do
 			get :new
 			expect(response).to render_template :new
 		end
+
 	end
 	
 	describe "POST create" do
-		let(:user1){ Fabricate.build(:user) }
+		# let(:user1){ Fabricate.build(:user) }
 
 		context "with valid parameters" do
-			it "saves user to db" do
-				post :create, Fabricate.attributes_for(:user)
+			before { post :create, user: Fabricate.attributes_for(:user) }
+
+			it "creates new user" do
         expect(User.count).to eq (1)
       end				
-			it "logs user in automatically"
-			it "redirects to home_path"
+			it "logs user in automatically" do
+				expect(session[:user_id]).to_not eq nil
+			end
+			it "redirects to home_path" do
+				expect(response).to redirect_to home_path
+			end
 		end
 
 		context "with invalid parameters" do
-			it "does not save to db"
-			it "doest not login the user"
-			it "renders the new template"
+			before { post :create, user: {email: "test@example.com" } }
+
+			it "does not create new user" do
+				expect(User.count).to eq (0)
+			end
+			it "doest not login the user" do
+				expect(session[:user_id]).to eq nil
+			end
+			it "renders the new template" do
+				expect(response).to render_template :new
+			end
 		end
 
 	end
