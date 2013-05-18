@@ -16,6 +16,13 @@ describe VideosController do
 				get :show, id: video1
 				assigns(:video).should == video1
 			end
+			it "sets @reviews for the authenticated" do
+				review1 = Fabricate(:review, video: video1)
+				review2 = Fabricate(:review, video: video1)
+				get :show, id: video1.id
+				expect(assigns(:reviews)).to include(review1, review2)
+			end
+
 			it "renders the show template" do
 				get :show, id: video1.id
 				expect(response).to render_template :show 
