@@ -3,6 +3,7 @@ class SessionsController < ApplicationController
 	def new
 		redirect_to home_path if current_user
 	end
+	
 	def create
 		user = User.where(email: params[:email]).first
 		if user && user.authenticate(params[:password]) #has_secure_password helper
