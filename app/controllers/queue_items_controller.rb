@@ -12,4 +12,10 @@ class QueueItemsController < ApplicationController
 			current_user.queue_items.map(&:video).include?(video)
 		redirect_to my_queue_path
 	end
+
+	def destroy
+		deleted_video = QueueItem.find(params[:id])
+		deleted_video.destroy
+		redirect_to my_queue_path, notice: "You removed #{deleted_video.video.title} from your Queue."
+	end
 end

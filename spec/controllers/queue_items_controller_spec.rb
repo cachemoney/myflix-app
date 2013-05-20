@@ -62,4 +62,34 @@ describe QueueItemsController do
 		end
 	end
 
+	describe "#POST destroy" do
+		context "Authenticated users" do
+			let(:alice) { Fabricate(:user) }
+			let(:video)	{Fabricate(:video) }
+			before { session[:user_id] = alice.id }
+
+			it "redirects to the my_queue page" do
+				video = Fabricate(:video)
+				queue_item1 = Fabricate(:queue_item, video: video, user: alice)
+				post :destroy, id: queue_item1.id
+				expect(response).to redirect_to my_queue_path
+			end
+
+			it "it removes the queue_item " do
+				video = Fabricate(:video)
+				queue_item1 = Fabricate(:queue_item, video: video, user: alice)
+				post :destroy, id: queue_item1.id
+				expect(QueueItem.count).to eq(0)
+			end
+
+		end
+
+		context "unauthenticated users" do
+			it "should redirect to sign_in page" do
+				post :destroy, id: 1
+				expect(response).to redirect_to(sign_in_path)
+			end
+		end		
+	end
+
 end
