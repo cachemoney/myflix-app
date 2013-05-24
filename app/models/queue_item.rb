@@ -1,8 +1,11 @@
 class QueueItem < ActiveRecord::Base
 	belongs_to	:user
 	belongs_to	:video
-
+	default_scope :order => "position ASC"
 	delegate :category, to: :video
+	delegate	:title, to: :video, prefix: :video
+
+	validates_numericality_of :position, {only_integer: true}
 
 	def video_title
 		video.title
