@@ -15,11 +15,11 @@ describe SessionsController do
 
     context "with existing user" do
       it "create login session" do
-        post :create, email: user1.email, password: "qwerty"
+        post :create, email: user1.email, password: "password"
         expect(session[:user_id]).to eq user1.id
       end
       it "redirects to the home page" do
-        post :create, email: user1.email,password: "qwerty"
+        post :create, email: user1.email,password: "password"
         expect(response).to redirect_to(home_path)
       end
     end

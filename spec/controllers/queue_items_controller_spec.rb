@@ -66,6 +66,7 @@ describe QueueItemsController do
 		context "Authenticated users" do
 			let(:alice) { Fabricate(:user) }
 			let(:video)	{Fabricate(:video) }
+			let(:video2)	{Fabricate(:video) }
 			before { session[:user_id] = alice.id }
 
 			it "redirects to the my_queue page" do
@@ -80,6 +81,13 @@ describe QueueItemsController do
 				queue_item1 = Fabricate(:queue_item, video: video, user: alice)
 				post :destroy, id: queue_item1.id
 				expect(QueueItem.count).to eq(0)
+			end
+
+			it "normalized the remaining queue items" do
+				queue_item1 = Fabricate(:queue_item, user: alice, video: video, position: 1)
+				queue_item2 = Fabricate(:queue_item, user: alice, video: video2, position: 2)
+				post :destroy, id: queue_item1.id
+				expect(QueueItem.first.position).to eq(1)
 			end
 
 		end
