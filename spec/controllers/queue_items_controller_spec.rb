@@ -17,23 +17,24 @@ describe QueueItemsController do
 	end
 
 	describe "#POST create" do
+		before { set_current_user }
 		context "Authenticated users" do
-			let(:alice) { Fabricate(:user) }
-			before { session[:user_id] = alice.id }
+			let!(:video) { Fabricate(:video) }
+			let!(:alice)	{ current_user }
 
 			it "redirects to the my_queue page" do
-				video = Fabricate(:video)
+				# video = Fabricate(:video)
 				post :create, video_id: video.id
 				expect(response).to redirect_to my_queue_path
 			end
 			it "creates queue_item associated with the video" do
-				video = Fabricate(:video)
+				# video = Fabricate(:video)
 				post :create, video_id: video.id
 				expect(QueueItem.first.video).to eq(video)
 			end
 
 			it "creates the queue item associated with current user" do
-				video = Fabricate(:video)
+				# video = Fabricate(:video)
 				post :create, video_id: video.id
 				expect(QueueItem.first.user).to eq(alice)
 			end
@@ -54,7 +55,6 @@ describe QueueItemsController do
 		end
 
 		context "unauthenticated users" do
-			before { set_current_user }
 			it_behaves_like "require_sign_in" do
 				let(:action) {post :create, video_id: 4}
 			end
@@ -63,11 +63,11 @@ describe QueueItemsController do
 	end
 
 	describe "#POST destroy" do
+		before { set_current_user }
 		context "Authenticated users" do
-			let(:alice) { Fabricate(:user) }
+			let(:alice) { current_user }
 			let(:video)	{Fabricate(:video) }
 			let(:video2)	{Fabricate(:video) }
-			before { session[:user_id] = alice.id }
 
 			it "redirects to the my_queue page" do
 				video = Fabricate(:video)
