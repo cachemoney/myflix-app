@@ -28,6 +28,32 @@ describe "QueueItem" do
   		expect(queue_item.rating).to be_nil  	
   	end
   end
+  describe "rating#" do
+    it "changes the rating of the review if the review is present" do
+      video = Fabricate(:video)
+      user = Fabricate(:user)
+      review = Fabricate(:review, user: user, video: video, rating: 2)
+      queue_item1 = Fabricate(:queue_item, user: user, video: video)
+      queue_item1.rating = 4
+      expect(Review.first.rating).to eq(4) #this forces a db lookup, otherwise it'd have to be review.reload.rating
+    end
+    it "can also clear the rating of the review if a review is present" do
+      video = Fabricate(:video)
+      user = Fabricate(:user)
+      review = Fabricate(:review, user: user, video: video, rating: 2)
+      queue_item1 = Fabricate(:queue_item, user: user, video: video)
+      queue_item1.rating = nil
+      expect(Review.first.rating).to be_nil
+    end
+    it "will create the review with a rating if the review is not present" do
+      video = Fabricate(:video)
+      user = Fabricate(:user)
+      queue_item1 = Fabricate(:queue_item, user: user, video: video)
+      queue_item1.rating = 3  
+      expect(Review.first.rating).to eq(3)
+
+    end
+  end
 
   describe "#category_name" do
   	it "returns the category of a video " do
