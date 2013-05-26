@@ -55,9 +55,8 @@ describe QueueItemsController do
 			end
 		end
 		context "unauthenticated users" do
-			it "should redirect to sign_in page" do
-				post :create, video_id: 4
-				expect(response).to redirect_to(sign_in_path)
+			it_behaves_like "require_sign_in" do
+				let(:action) {post :create, video_id: 4}
 			end
 		end
 	end
