@@ -15,8 +15,6 @@ end
 
 group :development do
   gem 'sqlite3'
-  gem 'pry'
-  gem 'pry-nav'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'meta_request'
@@ -30,8 +28,11 @@ group :test, :development do
   gem 'fabrication'
   gem 'faker'
 	gem 'rspec-rails'
+  gem 'pry'
+  gem 'pry-nav'  
 end
 
 group :test do
 	gem "shoulda-matchers"
+  gem 'capybara'
 end
