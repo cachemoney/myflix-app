@@ -1,7 +1,7 @@
 
 %article
 - @categories.each do |category|
-  .well
+  .well{id: "#{category.title}"}
     %header
       %strong= link_to category.title
       %br/
