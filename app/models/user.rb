@@ -3,7 +3,8 @@ class User < ActiveRecord::Base
 	validates_uniqueness_of	:email
 
 	has_secure_password
-	has_many :queue_items, order: :position
+	has_many	:queue_items, order: :position
+	has_many	:reviews, order: :created_at 
 
   def reorder_queue_items
     queue_items.each_with_index do |queue_item, index|
