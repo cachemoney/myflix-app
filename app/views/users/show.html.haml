@@ -5,7 +5,8 @@
         %header
           %img(src="#{gravatar_pic_url(@user)}")
           %h2  #{@user.full_name}'s video collections (#{@user.queue_items.count})
-          %button.btn Follow
+          - if is_current_user_friend?(@user)
+            %button.btn= link_to "Follow", friendships_path(friend_id: @user), method: :post
         %table.table
           %thead
             %tr

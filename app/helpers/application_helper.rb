@@ -9,4 +9,8 @@ module ApplicationHelper
 		hash = Digest::MD5.hexdigest(user.email.downcase)
 		"http://www.gravatar.com/avatar/#{hash}?s=40"
 	end
+
+	def is_current_user_friend?(friend)
+		current_user.friendships.map(&:friend_id).include?(friend.id).blank?
+	end
 end
