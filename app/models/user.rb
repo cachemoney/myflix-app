@@ -13,4 +13,13 @@ class User < ActiveRecord::Base
       queue_item.update_attributes(position: index+1)
     end
   end
+
+	def to_friend(user)
+		return if user == self
+		user.friends << self unless is_friend?(user)
+	end
+
+	def is_friend?(user)
+		user.friends.include?(self)
+	end  
 end
