@@ -11,6 +11,6 @@ module ApplicationHelper
 	end
 
 	def is_current_user_friend?(friend)
-		current_user.friendships.map(&:friend_id).include?(friend.id).blank?
+		current_user.friends.include?(friend).blank?
 	end
 end
