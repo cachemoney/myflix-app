@@ -1,2 +1,0 @@
-Fabricator(:relationship) do 
-end
