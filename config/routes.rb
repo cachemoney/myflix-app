@@ -12,8 +12,8 @@ Myflix::Application.routes.draw do
   get 'my_queue', to: 'queue_items#index'
   resources :queue_items, only: [:create, :update, :destroy]
   post 'update_queue', to: 'queue_items#update_queue'
-  get 'people', to: 'friendships#index'
-  resources :friendships, only: [:create, :destroy]
+  get 'people', to: 'relationships#index'
+  resources :relationships, only: [:create, :destroy]
 
   get 'ui(/:action)', controller: 'ui'
   get 'register', to: 'users#new'
