@@ -11,15 +11,11 @@ class RelationshipsController < ApplicationController
 		redirect_to people_path
 	end
 
-	# def create
-	#   @friendship = current_user.friendships.build(:friend_id => params[:friend_id])
-	#   if @friendship.save
-	#     flash[:notice] = "Added friend."
-	#     redirect_to people_path
-	#   else
-	#     flash[:error] = "Unable to add friend."
-	#     redirect_to user_path(@friendship.friend)
-	#   end
-	# end
+
+	def create
+		leader = User.find(params[:leader_id])
+		Relationship.create(leader_id: params[:leader_id], follower: current_user) if current_user.can_follow?(leader)
+		redirect_to people_path
+	end
 
 end

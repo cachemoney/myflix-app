@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
 
 	has_secure_password
 	has_many	:queue_items, order: :position
-	has_many	:reviews, order: :created_at
+	has_many	:reviews, order: "created_at DESC"
 	has_many :following_relationships, class_name: "Relationship", foreign_key: :follower_id
 	has_many	:leading_relationships, class_name: "Relationship", foreign_key: :leader_id
 
@@ -14,12 +14,12 @@ class User < ActiveRecord::Base
     end
   end
 
-	def to_friend(user)
-		return if user == self
-		user.friends << self unless is_friend?(user)
-	end
+  def follows?(another_user)
+  	following_relationships.map(&:leader).include?(another_user)
+  end
 
-	def is_friend?(user)
-		user.friends.include?(self)
-	end  
+  def can_follow?(another_user)
+		!(self.follows?(another_user) || self == another_user)
+  end
+
 end

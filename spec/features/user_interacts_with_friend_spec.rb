@@ -15,13 +15,13 @@ feature "User uses friend social features" do
 
 		find("a[href='/users/#{jon_friend.id}']").click
 		page.should have_content("#{jon_friend.full_name}'s video collections")
-		page.should have_button("Follow")
+		page.should have_link("Follow")
 
 		click_link "Follow"
 		current_path.should eq people_path
 		page.should	have_content(jon_friend.full_name)
 
-		find("a[href='/friendships/#{jon_friend.id}']").click
+		find("a[href='/relationships/#{jon_friend.id}']").click
 		within('tr') do
 			page.should_not have_content(jon_friend.full_name)
 		end

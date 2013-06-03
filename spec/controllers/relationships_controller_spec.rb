@@ -51,30 +51,44 @@ describe RelationshipsController do
 		end
 	end
 
-	# describe "GET create" do
-	# 	before { set_current_user }
-	# 	it "adds a user to current user friends" do
-	# 		bob = Fabricate(:user)
-	# 		alice = current_user
 
-	# 		post :create, friend_id: bob.id
-	# 		expect(alice.friends).to include(bob)
-	# 	end
-	# 	it "redirectes to the friends page after adding a friend" do
-	# 		bob = Fabricate(:user)
-	# 		alice = current_user
+	describe "POST create" do
+		it_behaves_like "require_sign_in" do
+			let(:action) {post :create, leader_id: 4}
+		end
 
-	# 		post :create, friend_id: bob.id
-	# 		expect(response).to redirect_to people_path		
-	# 	end
+		it "redirects to the people_page" do
+			alice = Fabricate(:user)
+			set_current_user(alice)
+			bob = Fabricate(:user)
+			post :create, leader_id: bob.id
+			expect(response).to redirect_to people_path
+		end
 
-	# 	it "displays flash notice on a successful friend follow" do
-	# 		bob = Fabricate(:user)
-	# 		alice = current_user
+		it "creates a relationship that the current user follows the leader" do
+			alice = Fabricate(:user)
+			set_current_user(alice)
+			bob = Fabricate(:user)
+			post :create, leader_id: bob.id
+			expect(alice.following_relationships.first.leader).to eq(bob)
+		end
 
-	# 		post :create, friend_id: bob.id
-	# 		expect(flash[:notice]).to be_present			
-	# 	end
-	# end
+		it "the current signed in user cant follow the same user twice" do
+			alice = Fabricate(:user)
+			set_current_user(alice)
+			bob = Fabricate(:user)
+			Fabricate(:relationship, leader: bob, follower: alice)
+			post :create, leader_id: bob.id
+			expect(Relationship.count).to eq(1)
+		end
+
+		it "doesnt now allow current_user to follow themselves" do
+			alice = Fabricate(:user)
+			set_current_user(alice)
+			post :create, leader_id: alice.id			
+			expect(Relationship.count).to eq(0)
+		end
+	end
+
 
 end

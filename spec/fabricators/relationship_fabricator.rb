@@ -1,2 +1,2 @@
-Fabricator(:friendship) do 
+Fabricator(:relationship) do 
 end
