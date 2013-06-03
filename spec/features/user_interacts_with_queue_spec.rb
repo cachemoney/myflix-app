@@ -11,7 +11,7 @@ feature "User interacts with the queue" do
 		find("a[href='/videos/#{monk.id}']").click
 		page.should have_content(monk.title)
 
-		click_link "+ My Queue"
+		click_button "+ My Queue"
 		page.should have_content(monk.title)
 
 		visit video_path(monk)
@@ -37,7 +37,7 @@ feature "User interacts with the queue" do
 	def add_video_to_queue(video)
 		visit home_path
 		find("a[href='/videos/#{video.id}']").click
-		click_link "+ My Queue"		
+		click_button "+ My Queue"		
 	end
 
 	def set_video_position(video, position)

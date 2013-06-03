@@ -23,17 +23,31 @@ users = []
 end
 
 reviews = []
-(0..25).each do |v|
-  reviews.tap {|ary| ary << Review.create(content: Faker::Lorem.paragraph(3), rating: [*1..5].sample, user: users[v%11])}
+(1..25).each do |v|
+  reviews.tap {|ary| ary << Review.create(content: Faker::Lorem.paragraph(3), rating: [*1..5].sample, user: users[v%11], video_id: rand(1..movies.count))}
 end
 
+videos = []
 movies.each do |title, description, small_url, large_url|
-  Video.create(title: title, description: description, category_id: rand(1..(categories.count)),
-  	small_cover_url: small_url, large_cover_url: large_url, reviews: reviews.sample(5))
+  videos.tap {|ary| ary << Video.create(title: title, description: description, category_id: rand(1..(categories.count)),
+    	small_cover_url: small_url, large_cover_url: large_url, reviews: reviews.sample(5))}
 end
 
 categories.each do |category|
 	Category.create(title: category)
 end
 
-User.create(full_name: "Robin Paul", email: "robin@example.com", password: "password")
+robin = User.create(full_name: "Robin Paul", email: "robin@example.com", password: "password")
+
+friendships = []
+(1..5).each do |i|
+	friendships.tap {|ary| ary << Friendship.create(user: robin, friend: users[i%10]) }
+end
+users << robin
+
+queue_items = []
+users.each do |user|
+	queue_items.tap { |ary| ary << QueueItem.create(video_id: rand(1..movies.count), position: 1, user: user) }
+end
+
+
