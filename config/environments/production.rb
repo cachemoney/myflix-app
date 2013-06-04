@@ -71,15 +71,12 @@ Myflix::Application.configure do
     :enable_starttls_auto => true, # detects and uses STARTTLS
     :user_name => "MANDRILL_USERNAME",
     :password  => "MANDRILL_PASSWORD", # SMTP password is any valid API key
-    :authentication => 'login', # Mandrill supports 'plain' or 'login'
-    :domain => 'vast-beyond-4945.herokuapp.com/', # your domain to identify your server when connecting
+    :authentication => 'login' # Mandrill supports 'plain' or 'login' 
   }
 
   config.action_mailer.default_url_options = { :host => 'vast-beyond-4945.herokuapp.com' }
   # ActionMailer Config
   # Setup for production - deliveries, no errors raised
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.default :charset => "utf-8"
 end
