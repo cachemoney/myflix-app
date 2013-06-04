@@ -7,6 +7,6 @@ class AppMailer < ActionMailer::Base
 	  @user = user
 	  @url = 'http://localhost:3000/sign_in'
 	  email_with_name = "#{@user.full_name} <#{@user.email}>"
-	  mail(:to => email_with_name, :subject => "Welcome to My Awesome Site")
+	  mail(to: @user.email, from: 'cachebroker@gmail.com' , subject: "Welcome to My Awesome Site")
 	end
 end
