@@ -66,11 +66,14 @@ Myflix::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
   config.action_mailer.smtp_settings = {
-  :address   => "smtp.mandrillapp.com",
-  :port      => 25,
-  :user_name => ENV["MANDRILL_USERNAME"],
-  :password  => ENV["MANDRILL_API_KEY"]
-}
+    address: "smtp.gmail.com",
+    port: 587,
+    domain: "example.com",
+    authentication: "plain",
+    enable_starttls_auto: true,
+    user_name: ENV["GMAIL_USERNAME"],
+    password: ENV["GMAIL_PASSWORD"]
+  }
 
   config.action_mailer.default_url_options = { :host => 'example.com' }
   # ActionMailer Config

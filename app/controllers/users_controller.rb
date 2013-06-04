@@ -7,6 +7,7 @@ class UsersController < ApplicationController
 		@user = User.new(params[:user])
 		if @user.save
 			session[:user_id] = @user.id
+			AppMailer.welcome_email(@user).deliver
 			redirect_to home_path, notice: "You are Signed in"
 		else
 			render :new
