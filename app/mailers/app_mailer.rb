@@ -9,4 +9,9 @@ class AppMailer < ActionMailer::Base
 	  email_with_name = "#{@user.full_name} <#{@user.email}>"
 	  mail(to: @user.email, from: 'info@myflix.com' , subject: "Welcome to My Awesome Site")
 	end
+
+	def password_reset(user)
+		@user = user
+		mail :to => @user.email, :subject => "Password Reset", from: "info@myflix.com"
+	end
 end
