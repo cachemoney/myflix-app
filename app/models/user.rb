@@ -30,4 +30,27 @@ class User < ActiveRecord::Base
   def generate_token(column)
       self.update_attribute(column, SecureRandom.urlsafe_base64)
   end  
+
+# new stufff.....................
+
+  def set_password_reset_token
+    self.password_reset_token = SecureRandom.urlsafe_base64
+    self.save(validate: false)
+  end
+
+  def set_password_reset_sent_at
+    self.password_reset_sent_at = Time.zone.now
+    self.save(validate: false)
+  end
+
+  def reset_password(new_password)
+    self.password = new_password
+    self.password_reset_token = ""
+    self.save
+  end
+
+
+
+
+
 end

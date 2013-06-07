@@ -40,7 +40,7 @@ describe UsersController do
 			end
 
 			it "sends out the email" do
-				ActionMailer::Base.deliveries.should_not be_empty				
+				ActionMailer::Base.deliveries.should_not be_empty
 			end
 			it "sends to the right receipient" do
 				message = ActionMailer::Base.deliveries.last
