@@ -4,6 +4,7 @@ Myflix::Application.routes.draw do
   get 'home', to: 'videos#index'
 
   get 'confirm_password_reset', to: 'pages#confirm_password_reset'
+  get 'invalid_token', to: 'pages#invalid_token'
   
 	resources :videos, only: [:show] do
 		collection do

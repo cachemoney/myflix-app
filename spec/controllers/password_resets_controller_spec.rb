@@ -32,27 +32,40 @@ describe PasswordResetsController do
 			get :edit, id: alice.reload.password_reset_token
 			expect(assigns(:user)).to be_instance_of(User)
 		end
+
+		context "with invalid token" do
+			it "redirects to invalid token template" do
+				alice.set_password_reset_token
+				alice.set_password_reset_sent_at
+				get :edit, id: alice.reload.password_reset_token + '123'
+				expect(response).to redirect_to invalid_token_path
+			end
+
 	end
 
 	describe "PUT udpate" do
-		let!(:alice) { Fabricate(:user) }		
-		before do
-			post :create, email: alice.email
-			get :edit, id: alice.reload.password_reset_token			
-		end
+		let!(:alice) { Fabricate(:user) }
 
 		context "with unexpired reset time" do
-			it "udpates users password upon reset" do
-
-				put :update, user: alice
-				controller(SessionsController) do
-					post :create, email: alice.email, password: "bermuda"
-					expect(response).to redirect_to(home_path)
-				end
+			it "resets users password" do
+				alice.set_password_reset_token
+				alice.set_password_reset_sent_at
+				old_password_digest = alice.password_digest
+				put :update, id: alice.password_reset_token, user: { password: alice.password + '123' }
+				expect(alice.reload.password_digest).to_not eq(old_password_digest)
 			end
-			it "redirects to root page"
+			it "redirects to root page" do
+				alice.set_password_reset_token
+				alice.set_password_reset_sent_at				
+				put :update, id: alice.password_reset_token, user: { password: alice.password + '123' }
+				expect(response).to redirect_to root_path
+			end
 		end
 
+
+		end
+
+		# Need to figure out to stub/mock time
 		context "with expired password reset verification email" do
 			it "doest not update password"
 			it "redirects to new password reset path"
