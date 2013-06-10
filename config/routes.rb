@@ -2,6 +2,9 @@ Myflix::Application.routes.draw do
 
   root to: 'pages#front'
   get 'home', to: 'videos#index'
+
+  get 'confirm_password_reset', to: 'pages#confirm_password_reset'
+  get 'invalid_token', to: 'pages#invalid_token'
   
 	resources :videos, only: [:show] do
 		collection do
@@ -21,4 +24,5 @@ Myflix::Application.routes.draw do
   get 'sign_out', to: 'sessions#destroy'
   resources :users, only: [:create, :show]
   resources :sessions, only: [:create]
+  resources :password_resets, only: [:new, :create, :edit, :update]
 end
