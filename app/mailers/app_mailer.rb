@@ -14,4 +14,13 @@ class AppMailer < ActionMailer::Base
 		@user = user
 		mail :to => @user.email, :subject => "Password Reset", from: "info@myflix.com"
 	end
+
+	def invite_email(user, message)
+		@user = user
+		@message = message
+		@url = "#{register_url}/?" + "invite_id=#{@user.id}"
+		mail(to: @user.invitee_email, 
+		subject: "#{@user.inviter.full_name} invites you to joing MyFlix",
+		from: "info@myflix.com")
+	end
 end

@@ -25,4 +25,5 @@ Myflix::Application.routes.draw do
   resources :users, only: [:create, :show]
   resources :sessions, only: [:create]
   resources :password_resets, only: [:new, :create, :edit, :update]
+  resources :invites, only: [:new, :create]
 end
