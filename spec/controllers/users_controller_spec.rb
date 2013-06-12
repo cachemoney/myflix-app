@@ -15,6 +15,14 @@ describe UsersController do
 			expect(response).to render_template :new
 		end
 
+		context "invite_id is set" do
+			it "sets @user with invitee from invites table" do
+				invitation = Fabricate(:invite)
+				get :new, invite_id: invitation.id
+				expect(assigns(:user).email).to eq(invitation.invitee_email)
+			end
+		end
+
 	end
 	
 	describe "POST create" do
@@ -50,6 +58,17 @@ describe UsersController do
 				message = ActionMailer::Base.deliveries.last
 				message.body.should include('You have successfully signed up to example.com')
 			end
+		end
+
+		context "makes friends betweem inviter and invitee" do
+			it "invitee is friend of inviter and vice versa" do
+				alice = Fabricate(:user)
+				bob = Fabricate.attributes_for(:user)
+				invitation = Fabricate(:invite, inviter: alice, invitee_email: bob[:email], full_name: bob[:full_name])
+				post :create, user: bob
+				expect(alice.follows?(User.last)).to be_true
+				expect(User.last.follows?(alice)).to be_true
+		  end
 		end
 
 		context "with invalid parameters" do

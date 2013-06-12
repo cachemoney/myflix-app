@@ -38,11 +38,17 @@ describe InvitesController do
         alice = Fabricate(:user)
         bob = Fabricate(:user)
         session[:user_id] = alice.id
-        invitation = Fabricate(:invite, inviter: bob)
-
-        # expect(invitation.inviter).not_to eq(bob)
-        expect(Invite.count).to eq 0
+        post :create, invites: Fabricate.attributes_for(:invite, inviter: bob)
+        expect(Invite.first.inviter).not_to eq(bob)
+        # expect(Invite.count).to eq 0
 		  end
+		end
+
+		context "unauthenticated user" do
+			before { set_current_user }
+			it_behaves_like "require_sign_in" do
+				let(:action) { post :create, invites: Fabricate.attributes_for(:invite) }
+			end
 		end
 	end
 end
