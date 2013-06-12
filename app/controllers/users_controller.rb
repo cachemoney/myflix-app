@@ -15,6 +15,7 @@ class UsersController < ApplicationController
 		if @user.save
 			session[:user_id] = @user.id
 			AppMailer.welcome_email(@user).deliver
+			befriend_inviter(@user) if Invite.find_by_invitee_email(@user.email)
 			redirect_to home_path, notice: "You are Signed in and email sent to: #{@user.email}"
 		else
 			render :new
@@ -30,4 +31,11 @@ class UsersController < ApplicationController
 		@invite_id = params[:invite_id] || nil
 	end
 
+	private
+
+	def befriend_inviter(invitee)
+		invite = Invite.find_by_invitee_email(invitee.email)
+		invitee_leader = Relationship.create(leader: invitee, follower: invite.inviter )
+		inviter_leader = Relationship.create(leader: invite.inviter, follower: invitee )
+	end
 end
