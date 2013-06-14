@@ -13,7 +13,8 @@ class InvitesController < ApplicationController
 		@invite_message = params[:invites][:message]
 		if @invite.save
 			AppMailer.invite_email(@invite, @invite_message).deliver
-			redirect_to root_path, notice: "You have notified #{@invite.full_name} to join MyFlix"
+			flash[:success] = "You have notified #{@invite.full_name} to join MyFlix"
+			redirect_to new_invite_path
 		else
 			render	:new
 		end

@@ -18,7 +18,7 @@ class AppMailer < ActionMailer::Base
 	def invite_email(invitation, message)
 		@invitation = invitation
 		@message = message
-		@url = "#{register_url}/?" + "invite_id=#{@invitation.id}"
+		@url = register_with_token_url(@invitation.token)
 		mail(to: @invitation.invitee_email, 
 		subject: "#{@invitation.inviter.full_name} invites you to joing MyFlix",
 		from: "info@myflix.com")

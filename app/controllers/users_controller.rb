@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-	before_filter :set_invite_id, only: [:new]
 
 	def new
 		if @invite_id
@@ -13,10 +12,11 @@ class UsersController < ApplicationController
 	def create
 		@user = User.new(params[:user])
 		if @user.save
+			handle_invitation
 			session[:user_id] = @user.id
 			AppMailer.welcome_email(@user).deliver
-			befriend_inviter(@user) if Invite.find_by_invitee_email(@user.email)
-			redirect_to home_path, notice: "You are Signed in and email sent to: #{@user.email}"
+			flash[:success] = "You are Signed in and email sent to: #{@user.email}"
+			redirect_to home_path
 		else
 			render :new
 		end
@@ -27,8 +27,15 @@ class UsersController < ApplicationController
     @reviews = @user.reviews		
 	end
 
-	def set_invite_id
-		@invite_id = params[:invite_id] || nil
+	def new_with_invitation_token
+		invitation = Invite.where(token: params[:token]).first
+		if invitation
+			@user = User.new(email: invitation.invitee_email)
+			@invite_token = invitation.token
+			render :new
+		else
+			redirect_to invalid_token_path
+		end
 	end
 
 	private
@@ -38,4 +45,14 @@ class UsersController < ApplicationController
 		invitee_leader = Relationship.create(leader: invitee, follower: invite.inviter )
 		inviter_leader = Relationship.create(leader: invite.inviter, follower: invitee )
 	end
+
+	def handle_invitation
+		if params[:invite_token].present?
+			invitation = Invite.where(token: params[:invite_token]).first
+			@user.follow(invitation.inviter)
+			invitation.inviter.follow(@user)
+			invitation.update_column(:token, nil)
+		end				
+	end
+
 end

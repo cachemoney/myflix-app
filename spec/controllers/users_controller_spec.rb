@@ -15,14 +15,31 @@ describe UsersController do
 			expect(response).to render_template :new
 		end
 
-		context "invite_id is set" do
-			it "sets @user with invitee from invites table" do
-				invitation = Fabricate(:invite)
-				get :new, invite_id: invitation.id
-				expect(assigns(:user).email).to eq(invitation.invitee_email)
-			end
+	end
+
+	describe "GET new_with_invitation_token" do
+		it "renders the new view template" do
+			invitation = Fabricate(:invite)
+			get :new_with_invitation_token, token: invitation.token
+			expect(response).to render_template :new
 		end
 
+		it "sets @user with invitee's email " do
+			invitation = Fabricate(:invite)
+			get :new_with_invitation_token, token: invitation.token
+			expect(assigns(:user).email).to eq(invitation.invitee_email)			
+		end
+		it "sets invitation token" do
+			invitation = Fabricate(:invite)
+			get :new_with_invitation_token, token: invitation.token
+			expect(assigns(:invite_token)).to eq invitation.token
+		end
+		it "redirects to expired token page for invalid tokens" do
+			invitation = Fabricate(:invite)
+			get :new_with_invitation_token, token: 'fskdhf'
+			expect(response).to redirect_to invalid_token_path
+
+		end
 	end
 	
 	describe "POST create" do
@@ -39,6 +56,27 @@ describe UsersController do
 			end
 			it "redirects to home_path" do
 				expect(response).to redirect_to home_path
+			end
+			it "makes the user follow the inviter" do
+				alice = Fabricate(:user)
+				invitation = Fabricate(:invite, inviter: alice, invitee_email: 'bob@example.com')
+				post :create, user: {email: 'bob@example.com', password: 'password', full_name: 'bob doe'}, invite_token: invitation.token
+				bob = User.where(email: 'bob@example.com').first
+				expect(bob.follows?(alice)).to be_true
+			end
+			it "makes the inviter follow the user" do
+				alice = Fabricate(:user)
+				invitation = Fabricate(:invite, inviter: alice, invitee_email: 'bob@example.com')
+				post :create, user: {email: 'bob@example.com', password: 'password', full_name: 'bob doe'}, invite_token: invitation.token
+				bob = User.where(email: 'bob@example.com').first
+				expect(alice.follows?(bob)).to be_true
+			end
+
+			it "expires the the invite when invitee registers" do
+				alice = Fabricate(:user)
+				invitation = Fabricate(:invite, inviter: alice, invitee_email: 'bob@example.com')
+				post :create, user: {email: 'bob@example.com', password: 'password', full_name: 'bob doe'}, invite_token: invitation.token
+				expect(Invite.first.token).to be_nil
 			end
 		end
 		context "email sending" do
@@ -60,16 +98,7 @@ describe UsersController do
 			end
 		end
 
-		context "makes friends betweem inviter and invitee" do
-			it "invitee is friend of inviter and vice versa" do
-				alice = Fabricate(:user)
-				bob = Fabricate.attributes_for(:user)
-				invitation = Fabricate(:invite, inviter: alice, invitee_email: bob[:email], full_name: bob[:full_name])
-				post :create, user: bob
-				expect(alice.follows?(User.last)).to be_true
-				expect(User.last.follows?(alice)).to be_true
-		  end
-		end
+
 
 		context "with invalid parameters" do
 			before { post :create, user: {email: "test@example.com" } }

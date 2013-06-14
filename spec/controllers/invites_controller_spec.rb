@@ -30,9 +30,9 @@ describe InvitesController do
 		  	post :create, invites: Fabricate.attributes_for(:invite)
 		  	ActionMailer::Base.deliveries.should_not be_empty	
 		  end
-		  it "redirects to root path after submit" do
+		  it "redirects to new invite path after submit" do
 		  	post :create, invites: Fabricate.attributes_for(:invite)
-		  	expect(response).to redirect_to root_path
+		  	expect(response).to redirect_to new_invite_path
 		  end
 		  it "doesnt create invite on someone elses behalf" do
         alice = Fabricate(:user)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130611163501) do
+ActiveRecord::Schema.define(:version => 20130614155722) do
 
   create_table "categories", :force => true do |t|
     t.string   "title"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(:version => 20130611163501) do
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
     t.string   "full_name"
+    t.string   "token"
   end
 
   create_table "queue_items", :force => true do |t|
