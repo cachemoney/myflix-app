@@ -5,6 +5,7 @@ require 'rspec/rails'
 require 'rspec/autorun'
 require 'capybara/rspec'
 require 'capybara/email/rspec'
+require 'sidekiq/testing/inline'
 # require 'capybara/rails'
 
 # Requires supporting ruby files with custom matchers and macros, etc,

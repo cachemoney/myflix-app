@@ -14,7 +14,7 @@ class UsersController < ApplicationController
 		if @user.save
 			handle_invitation
 			session[:user_id] = @user.id
-			AppMailer.welcome_email(@user).deliver
+			AppMailer.delay.welcome_email(@user)
 			flash[:success] = "You are Signed in and email sent to: #{@user.email}"
 			redirect_to home_path
 		else
@@ -39,12 +39,6 @@ class UsersController < ApplicationController
 	end
 
 	private
-
-	def befriend_inviter(invitee)
-		invite = Invite.find_by_invitee_email(invitee.email)
-		invitee_leader = Relationship.create(leader: invitee, follower: invite.inviter )
-		inviter_leader = Relationship.create(leader: invite.inviter, follower: invitee )
-	end
 
 	def handle_invitation
 		if params[:invite_token].present?
