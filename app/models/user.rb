@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
 	has_many	:reviews, order: "created_at DESC"
 	has_many :following_relationships, class_name: "Relationship", foreign_key: :follower_id
 	has_many	:leading_relationships, class_name: "Relationship", foreign_key: :leader_id
+  has_many  :invites, class_name: "Invite", foreign_key: :inviter_id
 
   def reorder_queue_items
     queue_items.each_with_index do |queue_item, index|
@@ -16,6 +17,10 @@ class User < ActiveRecord::Base
 
   def follows?(another_user)
   	following_relationships.map(&:leader).include?(another_user)
+  end
+
+  def follow(another_user)
+    following_relationships.create(leader: another_user) if can_follow?(another_user)
   end
 
   def can_follow?(another_user)

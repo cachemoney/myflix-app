@@ -16,6 +16,31 @@ describe UsersController do
 		end
 
 	end
+
+	describe "GET new_with_invitation_token" do
+		it "renders the new view template" do
+			invitation = Fabricate(:invite)
+			get :new_with_invitation_token, token: invitation.token
+			expect(response).to render_template :new
+		end
+
+		it "sets @user with invitee's email " do
+			invitation = Fabricate(:invite)
+			get :new_with_invitation_token, token: invitation.token
+			expect(assigns(:user).email).to eq(invitation.invitee_email)			
+		end
+		it "sets invitation token" do
+			invitation = Fabricate(:invite)
+			get :new_with_invitation_token, token: invitation.token
+			expect(assigns(:invite_token)).to eq invitation.token
+		end
+		it "redirects to expired token page for invalid tokens" do
+			invitation = Fabricate(:invite)
+			get :new_with_invitation_token, token: 'fskdhf'
+			expect(response).to redirect_to invalid_token_path
+
+		end
+	end
 	
 	describe "POST create" do
 		# let(:user1){ Fabricate.build(:user) }
@@ -31,6 +56,27 @@ describe UsersController do
 			end
 			it "redirects to home_path" do
 				expect(response).to redirect_to home_path
+			end
+			it "makes the user follow the inviter" do
+				alice = Fabricate(:user)
+				invitation = Fabricate(:invite, inviter: alice, invitee_email: 'bob@example.com')
+				post :create, user: {email: 'bob@example.com', password: 'password', full_name: 'bob doe'}, invite_token: invitation.token
+				bob = User.where(email: 'bob@example.com').first
+				expect(bob.follows?(alice)).to be_true
+			end
+			it "makes the inviter follow the user" do
+				alice = Fabricate(:user)
+				invitation = Fabricate(:invite, inviter: alice, invitee_email: 'bob@example.com')
+				post :create, user: {email: 'bob@example.com', password: 'password', full_name: 'bob doe'}, invite_token: invitation.token
+				bob = User.where(email: 'bob@example.com').first
+				expect(alice.follows?(bob)).to be_true
+			end
+
+			it "expires the the invite when invitee registers" do
+				alice = Fabricate(:user)
+				invitation = Fabricate(:invite, inviter: alice, invitee_email: 'bob@example.com')
+				post :create, user: {email: 'bob@example.com', password: 'password', full_name: 'bob doe'}, invite_token: invitation.token
+				expect(Invite.first.token).to be_nil
 			end
 		end
 		context "email sending" do
@@ -51,6 +97,8 @@ describe UsersController do
 				message.body.should include('You have successfully signed up to example.com')
 			end
 		end
+
+
 
 		context "with invalid parameters" do
 			before { post :create, user: {email: "test@example.com" } }
