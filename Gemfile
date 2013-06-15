@@ -30,7 +30,8 @@ group :test, :development do
   gem 'faker'
 	gem 'rspec-rails'
   gem 'pry'
-  gem 'pry-nav'  
+  gem 'pry-nav'
+  gem 'foreman'
 end
 
 group :test do
