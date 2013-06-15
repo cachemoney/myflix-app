@@ -28,7 +28,7 @@ class PasswordResetsController < ApplicationController
 	def send_password_reset(user)
 	  user.set_password_reset_token
 	  user.set_password_reset_sent_at
-	  AppMailer.password_reset(user).deliver	
+	  AppMailer.delay.password_reset(user)
 	end
 
 end
