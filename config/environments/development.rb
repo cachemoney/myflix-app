@@ -41,13 +41,22 @@ config.action_mailer.default :charset => "utf-8"
   # Expands the lines which load the assets
   config.assets.debug = true
 
+  # config.action_mailer.smtp_settings = {
+  #   address: "smtp.gmail.com",
+  #   port: 587,
+  #   domain: "localhost:3000",
+  #   authentication: "plain",
+  #   enable_starttls_auto: true,
+  #   user_name: ENV["GMAIL_USERNAME"],
+  #   password: ENV["GMAIL_PASSWORD"]
+  # }
+
   config.action_mailer.smtp_settings = {
-    address: "smtp.gmail.com",
-    port: 587,
-    domain: "localhost:3000",
-    authentication: "plain",
-    enable_starttls_auto: true,
-    user_name: ENV["GMAIL_USERNAME"],
-    password: ENV["GMAIL_PASSWORD"]
+     :authentication => :plain,
+     :address => "smtp.mailgun.org",
+     :port => 587,
+     :domain => "myflix.mailgun.org",
+     :user_name => ENV["MAILGUN_USERNAME"],
+     :password => ENV["MAILGUN_PASSWORD"]
   }
 end
