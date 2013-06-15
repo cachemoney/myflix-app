@@ -8,6 +8,7 @@ gem 'bootstrap_form'
 gem 'bcrypt-ruby'
 gem 'jquery-rails'
 gem 'sidekiq'
+gem 'unicorn'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
@@ -24,7 +25,6 @@ end
 
 group :production do
   gem 'pg'
-  gem 'unicorn'
 end
 
 group :test, :development do
