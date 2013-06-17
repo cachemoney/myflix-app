@@ -6,6 +6,10 @@ Myflix::Application.routes.draw do
   get 'confirm_password_reset', to: 'pages#confirm_password_reset'
   get 'invalid_token', to: 'pages#invalid_token'
   
+  namespace :admin do
+    resources :videos, only: [:new, :create]
+  end
+
 	resources :videos, only: [:show] do
 		collection do
 			post :search, to: "videos#search"
