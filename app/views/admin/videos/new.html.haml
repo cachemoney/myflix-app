@@ -2,7 +2,7 @@
   .container
     .row
       .span10.offset1
-        %form.form-horizontal
+        = bootstrap_form_for admin_videos_path, html: {class: "form-horizontal"}  do |f|
           %ul.nav.nav-tabs
             %li
               %a(href="/ui/admin_views_payments") Recent Payments
@@ -10,13 +10,12 @@
               %a(href="") Add a New Video
           %fieldset
             .control-group
-              %label.control-label Title
               .controls
-                %input.span3(type="text")
+                = f.text_field :title, label: "Title"
             .control-group
               %label.control-label Category
               .controls
-                %select
+                = f.collection_select :category_ids, Category.all, :id, :name, {}, { :multiple => true }
             .control-group
               %label.control-label Description
               .controls
