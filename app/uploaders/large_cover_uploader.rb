@@ -13,4 +13,7 @@ class LargeCoverUploader < CarrierWave::Uploader::Base
     %w(jpg jpeg gif png)
   end
 
+  def default_url
+  	"http://dummyimage.com/665x375/000000/00a2ff"
+  end
 end

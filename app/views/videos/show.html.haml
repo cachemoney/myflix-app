@@ -2,13 +2,14 @@
   .container
     .row
       .video_large_cover.span7.offset1
-        %img(src="http://dummyimage.com/665x375/000000/00a2ff")
+        = video_tag(@video.video_url, size: "665x375", poster: @video.large_cover_url.url, controls: true)
       .video_info.span3
         %header
           %h3= @video.title
           / %span Rating: 4.5/5.0
         %p= @video.description
         .actions
+          = button_to "Watch Now", 'www.google.com', class: "btn-primary btn"
         - if !in_current_user_queue?(@video)
           = button_to "+ My Queue", queue_items_path(video_id: @video.id), method: :post, class: "btn"
 

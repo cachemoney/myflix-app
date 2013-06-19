@@ -30,7 +30,9 @@
               .controls
                 %span.btn.btn-file
                   = f.file_field :small_cover_url
-
+            .control-group
+              .controls
+                = f.text_field :video_url, label: "Video URL"
           %fieldset.actions.control-group
             .controls
               %input(type="submit" value="Add Video" class="btn")
