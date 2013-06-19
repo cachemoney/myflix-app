@@ -41,7 +41,7 @@ robin = User.create(full_name: "Robin Paul", email: "robin@example.com", passwor
 
 friendships = []
 (1..5).each do |i|
-	friendships.tap {|ary| ary << Friendship.create(user: robin, friend: users[i%10]) }
+	# friendships.tap {|ary| ary << Friendship.create(user: robin, friend: users[i%10]) }
 end
 users << robin
 
