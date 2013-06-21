@@ -15,7 +15,7 @@
             .control-group
   
               .controls
-                = f.select "category_id", Category.all.collect {|x| [x.title, x.id]}, {prompt: 'Select Category'}
+                = f.select :category_id, Category.all.collect {|x| [x.title, x.id]}, {prompt: 'Select Category'}
             .control-group
 
               .controls

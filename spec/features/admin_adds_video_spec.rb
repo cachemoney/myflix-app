@@ -7,6 +7,7 @@ feature "Admin adds video" do
 		visit new_admin_video_path
 		page.should have_css("a", text: "Add a New Video")
 		fill_in  "video[title]", with: "Game Of Thrones"
+		# save_and_open_page
 		page.select( "2", from: "video[category_id]")
 	end
 end
