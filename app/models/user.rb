@@ -9,6 +9,10 @@ class User < ActiveRecord::Base
 	has_many	:leading_relationships, class_name: "Relationship", foreign_key: :leader_id
   has_many  :invites, class_name: "Invite", foreign_key: :inviter_id
 
+  def admin?
+    self.admin
+  end
+    
   def reorder_queue_items
     queue_items.each_with_index do |queue_item, index|
       queue_item.update_attributes(position: index+1)
