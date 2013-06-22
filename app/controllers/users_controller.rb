@@ -11,7 +11,9 @@ class UsersController < ApplicationController
 
 	def create
 		@user = User.new(params[:user])
-		if @user.save && handle_payments
+		handle_payments(@user)
+		
+		if @user.save
 			handle_invitation
 			session[:user_id] = @user.id
 			AppMailer.delay.welcome_email(@user)
@@ -49,25 +51,24 @@ class UsersController < ApplicationController
 		end				
 	end
 
-	def handle_payments
+	def handle_payments(user)
 	  # Amount in cents
 	  @amount = 999
 
 	  customer = Stripe::Customer.create(
-	    :email => @user.email,
+	    :email => user.email,
 	    :card  => params[:stripeToken]
 	  )
-
+	  
 	  charge = Stripe::Charge.create(
 	    :customer    => customer.id,
 	    :amount      => @amount,
 	    :description => 'Myflix New User Payment',
 	    :currency    => 'usd'
 	  )
-
 	rescue Stripe::CardError => e
 	  flash[:error] = e.message
-	  redirect_to :new
+	  render :new and return
 	end
 
 end
