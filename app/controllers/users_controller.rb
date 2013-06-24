@@ -11,11 +11,13 @@ class UsersController < ApplicationController
 
 	def create
 		@user = User.new(params[:user])
-		if @user.save
+		handle_payments(@user)
+		# require 'pry'; binding.pry
+		if @charge and @user.save
 			handle_invitation
 			session[:user_id] = @user.id
 			AppMailer.delay.welcome_email(@user)
-			flash[:success] = "You are Signed in and email sent to: #{@user.email}"
+			flash[:success] = "You are Signed in and your CC has been charged, an email has been sent to: #{@user.email}"
 			redirect_to home_path
 		else
 			render :new
@@ -47,6 +49,26 @@ class UsersController < ApplicationController
 			invitation.inviter.follow(@user)
 			invitation.update_column(:token, nil)
 		end				
+	end
+
+	def handle_payments(user)
+	  # Amount in cents
+	  @amount = 999
+
+	  customer = Stripe::Customer.create(
+	    :email => user.email,
+	    :card  => params[:stripeToken]
+	  )
+	  
+	  @charge = Stripe::Charge.create(
+	    :customer    => customer.id,
+	    :amount      => @amount,
+	    :description => 'Myflix New User Payment',
+	    :currency    => 'usd'
+	  )
+	rescue Stripe::CardError => e
+	  flash[:error] = e.message
+	  # render :new and return
 	end
 
 end

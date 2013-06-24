@@ -1,7 +1,13 @@
+= content_for :head do
+  %script(type="text/javascript" src="https://js.stripe.com/v2/")
+  :javascript
+    Stripe.setPublishableKey("#{Rails.configuration.stripe[:publishable_key]}");
+  = javascript_include_tag 'payments'
+
 %section.register.container
   .row
     .span10.offset1
-      = bootstrap_form_for @user, html: {class: "form-horizontal"}  do |f|
+      = bootstrap_form_for @user, html: {class: "form-horizontal", id: "payment-form"}  do |f|
         %header
           %h1 Register
         %fieldset
@@ -9,6 +15,21 @@
           = f.password_field :password
           = f.text_field :full_name, label: "Full Name"
           = hidden_field_tag :invite_token, @invite_token
+        %span.payment-errors
+        %fieldset.credit_card
+          .control-group
+            %label.control-label Credit Card Number
+            .controls
+              %input.span3.card-number(type="text")
+          .control-group
+            %label.control-label Security Code
+            .controls
+              %input.span3.card-cvc(type="text")
+          .control-group
+            %label.control-label Expiration
+            .controls
+              = select_month(Date.today, {add_month_numbers: true}, name: nil,  class: 'span2 card-expiry-month')
+              = select_year(Date.today.year, {start_year: Date.today.year, end_year: Date.today.year + 4}, name: nil, class: 'span1 card-expiry-year')
         %fieldset.actions.control-group
           .controls
-            %input(type="submit" value="Sign Up" class="btn")
+            %input(type="submit" value="Sign Up" class="btn payment_submit")

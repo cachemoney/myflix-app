@@ -11,6 +11,7 @@ gem 'sidekiq'
 gem 'unicorn'
 gem 'fog'
 gem 'carrierwave'
+gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
