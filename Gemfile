@@ -45,4 +45,6 @@ group :test do
   gem 'launchy'
   gem 'database_cleaner'
   gem 'capybara-email'
+  gem  'webmock'
+  gem  'vcr'
 end
