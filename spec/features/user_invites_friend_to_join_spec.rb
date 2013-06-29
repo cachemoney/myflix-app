@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature "User invites friend to join"  do
+feature "User invites friend to join", {js: true} do
 	background do
 		@alice = User.create(full_name: "Alice Doe", email: "alice@example.com", password: "password")
 		@bob = Fabricate.attributes_for(:user)
@@ -12,7 +12,7 @@ feature "User invites friend to join"  do
 		click_button	"Sign in"
 	end
 
-	scenario "invites friend to create an account" do
+	scenario "invites friend to create an account", driver: :selenium do
 		clear_emails
 		visit new_invite_path
 		fill_in  "invites[full_name]", with: @bob[:full_name]
