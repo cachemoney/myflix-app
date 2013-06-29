@@ -33,8 +33,9 @@ trailer_url = ["http://www.tools4movies.com/dvd_catalyst_profile_samples/Harold%
 
 videos = []
 movies.each do |title, description, small_url, large_url|
-  videos.tap {|ary| ary << Video.create(title: title, description: description, category_id: rand(1..(categories.count)),
-    	small_cover_url: small_url, large_cover_url: large_url, video_url: trailer_url.sample)}
+  videos.tap {|ary| ary << Video.create(title: title, description: description, small_cover_url: File.open(File.join(Rails.root, "/public/uploads/video/small_cover_url/#{small_url}")), 
+  	large_cover_url: File.open(File.join(Rails.root, "/public/uploads/video/large_cover_url/#{large_url}")), category_id: rand(1..(categories.count)),
+    					video_url: trailer_url.sample)}
 end
 
 categories.each do |category|
