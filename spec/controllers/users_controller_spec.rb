@@ -46,11 +46,18 @@ describe UsersController do
 		# let(:user1){ Fabricate.build(:user) }
 
 		context "with valid parameters" do
-			before { post :create, user: Fabricate.attributes_for(:user) }
+			# before { post :create, user: Fabricate.attributes_for(:user), token: '123' }
+			before do
+				charge = double('charge')
+				charge.stub(:success?).and_return(true)
+				StripeWrapper::Charge.stub(:create).and_return(charge)
+				post :create, user: Fabricate.attributes_for(:user), token: '123'
+			end
 
 			it "creates new user" do
         expect(User.count).to eq (1)
-      end				
+      end
+
 			it "logs user in automatically" do
 				expect(session[:user_id]).to_not eq nil
 			end
@@ -82,8 +89,12 @@ describe UsersController do
 		context "email sending" do
 			let!(:alice)	{Fabricate.attributes_for(:user)}
 			before do
-			 post :create, user: alice
+				charge = double('charge')
+				charge.stub(:success?).and_return(true)
+				StripeWrapper::Charge.stub(:create).and_return(charge)
+				post :create, user: alice
 			end
+			after { ActionMailer::Base.deliveries.clear }
 
 			it "sends out the email" do
 				ActionMailer::Base.deliveries.should_not be_empty
