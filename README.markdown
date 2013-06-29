@@ -1,11 +1,3 @@
----
-layout: post
-title: "myFlix README"
-date: 2013-06-29 13:44
-comments: false
-categories: myFlix Demo App
-published:  false
----
 **Introduction** 
 myFlix is a functional demo app, similar to the functionality in Netflix, that allows users to create an account, authenticate their credentials, Invite friends to join, create a queue of videos, creating/maintaining relationships with other users in the form of 'Friends', as well as Paying for a subscription. There is also an admin section that allows video's to be added to the database.
 
