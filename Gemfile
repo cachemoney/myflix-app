@@ -12,6 +12,7 @@ gem 'unicorn'
 gem 'fog'
 gem 'carrierwave'
 gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
+gem 'faker'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
@@ -32,7 +33,6 @@ end
 
 group :test, :development do
   gem 'fabrication'
-  gem 'faker'
 	gem 'rspec-rails'
   gem 'pry'
   gem 'pry-nav'
