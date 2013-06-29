@@ -22,6 +22,7 @@ I started from a mock-up with templates already coded in html and replaced sampl
 * Tokens to anonymize data, Reset password feature, Invite a friend to Sign-up)
 * Admin Section - To add more videos
 * 3rd Party SMTP Integration - Mailgun to deploy System Email notifications
+* Along with best Practices, like (Skinny Controller, Fat Models)
 
 **Installation**
 
