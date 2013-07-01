@@ -12,4 +12,5 @@ class Video < ActiveRecord::Base
   	return [] if search_term.blank?
   	where("title LIKE ?", "%#{ search_term}%").order("created_at DESC")
 	end
+
 end

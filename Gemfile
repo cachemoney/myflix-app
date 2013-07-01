@@ -13,6 +13,7 @@ gem 'fog'
 gem 'carrierwave'
 gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 gem 'faker'
+gem 'draper', '~> 1.0'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
