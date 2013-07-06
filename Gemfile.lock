@@ -237,7 +237,7 @@ GEM
       rack
       raindrops (~> 0.7)
     vcr (2.5.0)
-    webmock (1.12.0)
+    webmock (1.11.0)
       addressable (>= 2.2.7)
       crack (>= 0.3.2)
     websocket (1.0.7)
@@ -282,4 +282,4 @@ DEPENDENCIES
   uglifier (>= 1.0.3)
   unicorn
   vcr
-  webmock
+  webmock (= 1.11.0)

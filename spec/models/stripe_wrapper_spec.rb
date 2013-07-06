@@ -28,7 +28,7 @@ describe StripeWrapper::Charge do
 	  	expect(response).to_not be_success
 	  end
 	  it "contains and error response message" do
-	  	expect(response.error_message).to eq('Your card was declined')
+	  	expect(response.error_message).to eq('Your card was declined.')
 	  end
 	end
 end

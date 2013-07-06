@@ -21,3 +21,7 @@ def sign_in(a_user=nil)
 	fill_in	"password", with: user.password
 	click_button	"Sign in"
 end
+
+def sign_out
+  visit sign_out_path
+end
