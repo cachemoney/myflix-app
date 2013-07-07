@@ -50,6 +50,7 @@ describe UsersController do
 			before do
 				StripeWrapper::Charge.should_receive(:create).and_return(charge)
 			end
+			after { ActionMailer::Base.deliveries.clear }
 
 			it "creates new user" do
 				post :create, user: Fabricate.attributes_for(:user)

@@ -4,7 +4,7 @@ feature "User invites friend to join" do
 	background do
 	end
 
-	scenario "invites friend to create an account", {js: true, driver: :selenium} do
+	scenario "invites friend to create an account", {js: true, driver: :selenium, vcr: true} do
 		clear_emails
 		@alice = User.create(full_name: "Alice Doe", email: "alice@example.com", password: "password")
 		@bob = Fabricate.attributes_for(:user)
@@ -15,7 +15,7 @@ feature "User invites friend to join" do
 
 		# page.should	have_content("You are Signed in and your CC has been charged, an email has been sent to: #{@bob[:email]}")
 		# Check Friendships for friend
-		friend_signs_in(@bob)
+		# friend_signs_in(@bob)
 		visit people_path
 		page.should have_link(@alice.full_name)
 		# Check Friendship for inviter

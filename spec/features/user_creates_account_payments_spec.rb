@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'Visitor signs up and makes a payment', {js: true, driver: :selenium} do
+feature 'Visitor signs up and makes a payment', {js: true, driver: :selenium, vcr: true} do
 	background do
 		visit register_path
 		@alice = Fabricate.attributes_for(:user)
