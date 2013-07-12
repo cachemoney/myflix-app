@@ -11,23 +11,14 @@ class UsersController < ApplicationController
 
 	def create
 		@user = User.new(params[:user])
-		stripe_token = params[:stripeToken]
-		invite_token = params[:invite_token]
 
-		if @user.valid?
-			registration = UserRegistration.new(@user, stripe_token, invite_token)
-			registration_charge = registration.charge_card
-			if registration_charge.success?
-				registration.register_user
-				session[:user_id] = @user.id
-				flash[:success] = "You are Signed in and your CC has been charged, an email has been sent to: #{@user.email}"
-				redirect_to home_path
-			else
-				flash[:error] = registration_charge.error_message
-				render	:new
-			end
+		registration = UserRegistration.new(@user).register_user(params[:stripeToken],params[:invite_token])
+		if registration.successful?
+			session[:user_id] = @user.id
+			flash[:success] = "You are Signed in and your CC has been charged, an email has been sent to: #{@user.email}"
+			redirect_to home_path
 		else
-			flash[:error] = "Unable to add You"
+			flash[:error] = registration.error_message
 			render	:new
 		end
 	end
