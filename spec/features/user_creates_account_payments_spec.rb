@@ -22,14 +22,14 @@ feature 'Visitor signs up and makes a payment', {js: true, driver: :selenium, vc
 		fill_user_fields_invalid(@alice)
 		fill_credit_card_fields('4242424242424242')
 		click_button 'Sign Up'
-		page.should	have_content("Unable to add You")
+		page.should	have_content("Invalid user information. Please check the errors below")
 	end
 	
 	scenario 'with invalid user info and invalid payment info' do
 		fill_user_fields_invalid(@alice)
 		fill_credit_card_fields('4242424242424242')
 		click_button 'Sign Up'
-		page.should	have_content("Unable to add You")
+		page.should	have_content("Invalid user information. Please check the errors below")
 	end
 
 	def fill_credit_card_fields(card_number)
