@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 class LargeCoverUploader < CarrierWave::Uploader::Base
-  storage :fog
+  
   include CarrierWave::MimeTypes
   process :set_content_type
   

@@ -2,7 +2,6 @@
 
 class SmallCoverUploader < CarrierWave::Uploader::Base
 
-  storage :fog
   include CarrierWave::MimeTypes
   process :set_content_type
 

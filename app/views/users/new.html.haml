@@ -18,13 +18,13 @@
         %span.payment-errors
         %fieldset.credit_card
           .control-group
-            %label.control-label Credit Card Number
+            %label.control-label(for="credit-card-number") Credit Card Number
             .controls
-              %input.span3.card-number(type="text"){id: 'card-number'}
+              %input.span3.card-number#credit-card-number(type="text")
           .control-group
-            %label.control-label Security Code
+            %label.control-label(for="security-code") Security Code
             .controls
-              %input.span3.card-cvc(type="text"){id: 'card-cvc'}
+              %input.span3.card-cvc#security-code(type="text")
           .control-group
             %label.control-label Expiration
             .controls
